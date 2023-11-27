@@ -15,26 +15,26 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name="bill_products")
-@NoArgsConstructor
 @AllArgsConstructor
-public class Bill_Products implements Serializable{
+@NoArgsConstructor
+@Table(name="product_indredients")
+public class ProductIngredientsEntity implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne
-	@JoinColumn(name="productID")
-	private Product product;
 	
 	@ManyToOne
-	@JoinColumn(name="billID")
-	private Bill bill;
+	@JoinColumn(name="ingredientsID")
+	private IngredientsEntity ingredients;
 	
-	private int amount;
+	@ManyToOne
+	@JoinColumn(name ="productID")
+	private ProductEntity product;
 }

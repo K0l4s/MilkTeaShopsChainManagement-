@@ -1,26 +1,27 @@
-package alotra.milktea.service;
+package alotra.milktea.service.Implements;
 
 import java.util.List;
 
+import alotra.milktea.entity.UserEntity;
+import alotra.milktea.service.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import alotra.milktea.entity.User;
 import alotra.milktea.repository.IUserRepo;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService {
 	@Autowired
 	IUserRepo userRepo;
 	
 	@Override
 	@Transactional
-	public boolean register(User user) {
+	public boolean register(UserEntity user) {
 		try {
 //			Kiểm tra trùng lặp username
-			List<User> listUser = findAll();
-			for(User item:listUser)
+			List<UserEntity> listUser = findAll();
+			for(UserEntity item:listUser)
 				if(item.getUsername().equals(user.getUsername()))
 						return false;
 //			Nếu không lặp username thì lưu user mới
@@ -36,31 +37,31 @@ public class UserServiceImpl implements IUserService{
 //		String username = user.getUsername();
 //		String password = user.getPassword();
 //		return userRepo.login(username, password);
-		List<User> listUser = userRepo.findUserByUsernameAndPassword(username,password);
+		List<UserEntity> listUser = userRepo.findUserByUsernameAndPassword(username,password);
 		if(listUser.isEmpty())
 			return false;
 		return true;
 	}
 
 	@Override
-	public List<User> findAll() {
+	public List<UserEntity> findAll() {
 		return userRepo.findAll();
 	}
 
 	@Override
-	public User findOne(String username) {
+	public UserEntity findOne(String username) {
 		return userRepo.findUserByUsername(username);
 	}
 
 	@Override
-	public boolean vetifyUserCode(User user) {
+	public boolean vetifyUserCode(UserEntity user) {
 		String code = user.getCode();
 		String username = user.getUsername();
 //		boolean flag = userRepo.findUserByUsernameAndCode(username, code);
-		List<User> listUser = userRepo.findUserByUsernameAndCode(username, code);
+		List<UserEntity> listUser = userRepo.findUserByUsernameAndCode(username, code);
 		if(listUser.isEmpty())
 			return false;
-		User updateUser = findOne(username);
+		UserEntity updateUser = findOne(username);
 		updateUser.setCode("Vetify");
 		userRepo.save(updateUser);
 		return true;

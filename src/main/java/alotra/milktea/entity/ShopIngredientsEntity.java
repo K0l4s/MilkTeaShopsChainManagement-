@@ -6,17 +6,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="role")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Role implements Serializable{
+@Table(name="shop_ingredients")
+public class ShopIngredientsEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -24,7 +26,15 @@ public class Role implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int roleId;
+	private int id;
 	
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="shopID")
+	private ShopEntity shop;
+	
+	@ManyToOne
+	@JoinColumn(name="ingredientsID")
+	private IngredientsEntity ingredients;
+	
+	private int amount;
 }

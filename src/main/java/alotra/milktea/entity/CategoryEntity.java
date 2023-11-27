@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="category")
-public class Category implements Serializable{
+public class CategoryEntity implements Serializable{
 	/**
 	 * 
 	 */

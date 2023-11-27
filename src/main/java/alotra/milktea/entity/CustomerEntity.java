@@ -2,15 +2,9 @@ package alotra.milktea.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.*;
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="customer")
-public class Customer implements Serializable{
+public class CustomerEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -27,17 +21,20 @@ public class Customer implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private Long customerID;
 	
 	@NotNull
 	@Length(min=5,max=50)
+	@Column(name="name")
 	private String customerName;
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="userName")
-	private User user;
+	private UserEntity user;
 	
 	@Length(max=10)
+	@Column(name="phone")
 	private String phone;
 }

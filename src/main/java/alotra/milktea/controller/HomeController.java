@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
-import alotra.milktea.entity.User;
+import alotra.milktea.entity.UserEntity;
 import alotra.milktea.service.Email;
-import alotra.milktea.service.IUserService;
-import alotra.milktea.service.UserServiceImpl;
+import alotra.milktea.service.Interfaces.IUserService;
+import alotra.milktea.service.Implements.UserServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Controller
 public class HomeController {
@@ -26,7 +25,7 @@ public class HomeController {
 
 	@GetMapping("/home")
 	protected String home() {
-		return "home/home";
+		return "views/home/home";
 	}
 
 	@GetMapping("/login")
@@ -42,21 +41,42 @@ public class HomeController {
             return "redirect:/home";
         }
 
-        User user = new User();
+		UserEntity user = new UserEntity();
 		model.addAttribute("user", user);
-        return "home/login"; // Assuming you have a login template named "login.html"
+        return "views/home/login"; // Assuming you have a login template named "login.html"
 	}
-
 	@GetMapping("/register")
-	protected String showRegisterForm(Model model) {
-		User user = new User();
+	protected String showRegisterForm(HttpSession session, @CookieValue(value = "username", defaultValue = "") String username, Model model){
+		// Check Session
+		if (session.getAttribute("username") != null) {
+			return "redirect:/home";
+		}
+
+		// Check Cookie
+		if (!username.isEmpty()) {
+			session.setAttribute("username", username);
+			return "redirect:/home";
+		}
+
+		UserEntity user = new UserEntity();
 		model.addAttribute("user", user);
-		return "home/register";
+		return "views/home/register";
 	}
 
 	@GetMapping("vetifyRegister")
-	protected String showVetifyRegister(@RequestParam("username") String username, Model model) {
-		User user = userService.findOne(username);
+	protected String showVetifyRegister(@RequestParam("username") String username, HttpSession session, @CookieValue(value = "username", defaultValue = "") String cookieUsername, Model model){
+		// Check Session
+		if (session.getAttribute("username") != null) {
+			return "redirect:/home";
+		}
+
+		// Check Cookie
+		if (!cookieUsername.isEmpty()) {
+			session.setAttribute("username", username);
+			return "redirect:/home";
+		}
+
+		UserEntity user = userService.findOne(username);
 		if (user != null) {
 			if (user.getCode() == null || user.getCode().equals("Vetify")) {
 				return "redirect:/home";
@@ -65,10 +85,10 @@ public class HomeController {
 				// newUser.setCode(null);
 				user.setCode(null);
 				model.addAttribute("user", user);
-				return "home/vetifyRegister";
+				return "views/home/vetifyRegister";
 			}
 		} else {
-			return "home/home";
+			return "views/home/home";
 		}
 
 	}
@@ -79,9 +99,18 @@ public class HomeController {
 	}
 
 	@PostMapping("/vetifyRegister")
-	protected String vetifyRegis(@ModelAttribute("user") User user) {
-		if (userService.vetifyUserCode(user))
+	protected String vetifyRegis(@ModelAttribute("user") UserEntity user, HttpSession session,
+								 HttpServletResponse response) {
+		if (userService.vetifyUserCode(user)) {
+			String username = user.getUsername();
+			session.setAttribute("username", username);
+
+			// Thiết lập Cookie
+			Cookie usernameCookie = new Cookie("username", username);
+			usernameCookie.setMaxAge(3600);
+			response.addCookie(usernameCookie);
 			return "redirect:/home";
+		}
 		return "redirect:/vetifyRegister?username=" + user.getUsername();
 	}
 
@@ -91,7 +120,7 @@ public class HomeController {
 	}
 
 	@PostMapping("register")
-	protected String reg(@ModelAttribute("user") User user) {
+	protected String reg(@ModelAttribute("user") UserEntity user) {
 		user.setCode(email.getRandom());
 		if (userService.register(user)) {
 			email.sendEmailCode(user);

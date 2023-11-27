@@ -2,12 +2,7 @@ package alotra.milktea.entity;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Shop_Products implements Serializable{
+@Table(name="shop_products")
+public class ShopProductsEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -28,11 +24,11 @@ public class Shop_Products implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="shopID")
-	private Shop shop;
+	private ShopEntity shop;
 	
 	@ManyToOne
 	@JoinColumn(name="productsID")
-	private Product products;
+	private ProductEntity products;
 	
 	private int amount;
 }
