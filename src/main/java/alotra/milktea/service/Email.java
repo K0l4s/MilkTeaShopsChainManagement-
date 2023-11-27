@@ -8,7 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import alotra.milktea.entity.User;
+import alotra.milktea.entity.UserEntity;
 import jakarta.mail.search.DateTerm;
 
 @Service
@@ -37,7 +37,7 @@ public class Email {
 		}
 	}
 
-	public String sendEmailCode(User user) {
+	public String sendEmailCode(UserEntity user) {
 		try {
 		String toEmail = user.getEmail();
 		String code = getRandom();

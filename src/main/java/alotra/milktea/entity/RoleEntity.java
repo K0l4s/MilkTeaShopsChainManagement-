@@ -3,6 +3,8 @@ package alotra.milktea.entity;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -10,19 +12,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Table(name="role")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="shop")
-public class Shop implements Serializable{
+@Data
+public class RoleEntity implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String shopID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int roleId;
 	
 	private String name;
-	private String location;
 }

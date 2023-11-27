@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Table(name="bill_products")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="employee")
-public class Employee implements Serializable{
+public class BillProductsEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -26,21 +26,15 @@ public class Employee implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int employeeID;
+	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name="roleID")
-	private Role roleID;
-	
-	private String citizenID;
-	private String name;
-	private String photo;
+	@JoinColumn(name="productID")
+	private ProductEntity product;
 	
 	@ManyToOne
-	@JoinColumn(name="username")
-	private User username;
+	@JoinColumn(name="billID")
+	private BillEntity bill;
 	
-	@ManyToOne
-	@JoinColumn(name="shopID")
-	private Shop shop;
+	private int amount;
 }

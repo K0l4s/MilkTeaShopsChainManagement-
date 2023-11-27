@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="product")
-public class Product implements Serializable{
+public class ProductEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -35,7 +35,7 @@ public class Product implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="categoryID")
-	private Category category;
+	private CategoryEntity category;
 	private double price;
 	private String imageURL;
 	@Column(columnDefinition = "text")

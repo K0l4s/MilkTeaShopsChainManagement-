@@ -7,16 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import alotra.milktea.entity.User;
+import alotra.milktea.entity.UserEntity;
 
 @Repository
-public interface IUserRepo extends JpaRepository<User, String>{
+public interface IUserRepo extends JpaRepository<UserEntity, String>{
 
-	User findUserByUsername(String username);
+	UserEntity findUserByUsername(String username);
 	
 //	@Query("SELECT u FROM User u WHERE (u.username = :username AND u.code = :code)")
-	List<User> findUserByUsernameAndCode(@Param("username") String username,@Param("code") String code);
+	List<UserEntity> findUserByUsernameAndCode(@Param("username") String username,@Param("code") String code);
 	
 //	@Query("SELECT u FROM User u WHERE u.username = :email AND u.password = :password")
-	List<User> findUserByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
+	List<UserEntity> findUserByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
 }

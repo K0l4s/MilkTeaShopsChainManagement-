@@ -3,13 +3,7 @@ package alotra.milktea.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bill implements Serializable{
+public class BillEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -27,15 +21,17 @@ public class Bill implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name = "customerID")
-	private Customer customer;
+	@JoinColumn(name = "customerid")
+	private CustomerEntity customer;
 	
 	@ManyToOne
-	@JoinColumn(name="employeeID")
-	private Employee employee;
-	
+	@JoinColumn(name="employeeid")
+	private EmployeeEntity employee;
+
+	@Column(name="createday")
 	private LocalDateTime createDay;
 }
