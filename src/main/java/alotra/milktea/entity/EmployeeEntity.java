@@ -28,9 +28,9 @@ public class EmployeeEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeID;
 	
-	@ManyToOne
-	@JoinColumn(name="roleID")
-	private RoleEntity roleID;
+//	@ManyToOne
+//	@JoinColumn(name="roleID")
+//	private RoleEntity roleID;
 	
 	private String citizenID;
 	private String name;

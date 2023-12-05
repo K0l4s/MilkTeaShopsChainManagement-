@@ -96,6 +96,18 @@ public class HomeController {
 	@GetMapping("/registerInformation")
 	protected String insertInfor() {
 		return null;
+	};
+	@GetMapping("/thoat")
+	protected String logout(HttpSession session, HttpServletResponse response)	{
+			// Invalidate the session
+			session.invalidate();
+
+			// Clear the username cookie
+			Cookie usernameCookie = new Cookie("username", "");
+			usernameCookie.setMaxAge(0); // Set the cookie age to 0 to delete it
+			response.addCookie(usernameCookie);
+
+			return "redirect:/home";
 	}
 
 	@PostMapping("/vetifyRegister")
@@ -118,7 +130,6 @@ public class HomeController {
 	protected String resendReqCode() {
 		return null;
 	}
-
 	@PostMapping("register")
 	protected String reg(@ModelAttribute("user") UserEntity user) {
 		user.setCode(email.getRandom());

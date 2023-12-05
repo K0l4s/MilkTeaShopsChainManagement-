@@ -1,11 +1,10 @@
 package alotra.milktea.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,4 +32,12 @@ public class UserEntity implements Serializable{
 	
 	@Column(length=6)
 	private String code;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "user_roles",
+			joinColumns = @JoinColumn(name = "username"),
+			inverseJoinColumns = @JoinColumn(name = "roleId")
+	)
+	private Set<RoleEntity> roles = new HashSet<>();
 }

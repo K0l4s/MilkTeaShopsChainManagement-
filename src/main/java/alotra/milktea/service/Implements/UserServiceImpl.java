@@ -22,7 +22,7 @@ public class UserServiceImpl implements IUserService {
 //			Kiểm tra trùng lặp username
 			List<UserEntity> listUser = findAll();
 			for(UserEntity item:listUser)
-				if(item.getUsername().equals(user.getUsername()))
+				if(item.getUsername().equals(user.getUsername()) || item.getEmail().equals(user.getEmail()))
 						return false;
 //			Nếu không lặp username thì lưu user mới
 			userRepo.save(user);
@@ -57,6 +57,7 @@ public class UserServiceImpl implements IUserService {
 	public boolean vetifyUserCode(UserEntity user) {
 		String code = user.getCode();
 		String username = user.getUsername();
+		code = code.replaceAll("\\s","");
 //		boolean flag = userRepo.findUserByUsernameAndCode(username, code);
 		List<UserEntity> listUser = userRepo.findUserByUsernameAndCode(username, code);
 		if(listUser.isEmpty())
